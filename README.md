@@ -80,7 +80,7 @@ export default function Router() {
 }
 ```
 
-内部实现了keepAlive功能，并且集成了可拖拽的页签功能
+### 内部实现了keepAlive功能，并且集成了可拖拽的页签功能
 
 ```typescript
 <Tabs
@@ -116,7 +116,7 @@ export default function Router() {
     />
 ```
 
-封装了Axios，支持传入泛型
+### 封装了Axios，支持传入泛型
 
 ```typescript
 const request= <T>(options:AxiosRequestConfig): Promise<Response<T>>=>{
@@ -125,7 +125,7 @@ const request= <T>(options:AxiosRequestConfig): Promise<Response<T>>=>{
 export default request;
 ```
 
-统一了主题样式和颜色管理
+### 统一了主题样式和颜色管理
 
 ```typescript
   //主题色
