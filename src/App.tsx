@@ -1,10 +1,9 @@
 import GlobalStyle from "./styles/global";
-import { theme } from "./styles/theme";
 import { ConfigProvider } from "antd";
 import zhCN from "antd/locale/zh_CN";
 import Router from "./router/index";
 import { routesProps } from "./router/routes";
-import { useAppDispatch } from "./store/index";
+import { useAppDispatch, useAppSelector } from "./store/index";
 import { useEffect } from "react";
 import { genRouteList } from "./utils";
 import "dayjs/locale/zh-cn";
@@ -19,6 +18,8 @@ function App() {
   useEffect(() => {
     dispatch({ type: "routes/setList", payload: genRouteList(routesProps) });
   }, []);
+
+  const theme = useAppSelector((state) => state.theme.config)
   return (
     <>
       <GlobalStyle></GlobalStyle>

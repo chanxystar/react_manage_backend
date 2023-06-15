@@ -14,7 +14,7 @@
 
 # 项目特点
 
-集成封装了axios、redux、react-router-dom、styled-components等常用库,封装了可配置化的全局主题变量，设置了vite跨域处理，同时预留了权限管理路由的接口，内部实现了单页面页签功能
+集成封装了axios、redux、react-router-dom、styled-components等常用库,封装了主题色变更组件，设置了vite跨域处理，同时预留了权限管理路由的接口，内部实现了单页面页签功能
 
 本项目推荐使用css in js写法，内置了styled-components库
 
@@ -125,34 +125,45 @@ const request= <T>(options:AxiosRequestConfig): Promise<Response<T>>=>{
 export default request;
 ```
 
-### 统一了主题样式和颜色管理
+### 支持主题颜色随心所欲的变更
 
 ```typescript
-  //主题色
-export const theme = {
-  token: {
-    colorPrimary: "#00b8d4",
-    colorLink:  "#00b8d4",
-    colorLinkActive:'#4D4CA6',
-    colorLinkHover:'#4D4CA6'
-  },
-};
-//用于过度效果的较深的主题色
-export const deepColor = "#0097a7"
-//布局的头部高度
-export const HeaderHeight = "60px";
-//Col组件的统一的响应式布局
-export const ColStyle = {
-  xs: { span: 18 },
-  sm: { span: 12 },
-  md: { span: 10 },
-  xl: { span: 7 },
-};
+<Popover
+      trigger="click"
+      content={
+        <Row justify={"center"} align={"middle"}>
+          <Space>
+            <ColorCol>
+              <span>主题</span>
+              <ColorPicker
+                value={color}
+                onChange={(_, hex) =>
+                  dispatch({ type: "theme/changeColor", payload: hex })
+                }
+              />
+            </ColorCol>
+            <ColorCol>
+              <span>渐变</span>
+              <ColorPicker
+                value={gradient}
+                onChange={(_, hex) =>
+                  dispatch({ type: "theme/changeGradient", payload: hex })
+                }
+              />
+            </ColorCol>
+          </Space>
+        </Row>
+      }
+    >
+      <Button>
+        <ClearOutlined />
+      </Button>
+    </Popover>
 ```
 
 # 项目截图
 
-![1686727469490](image/README/1686727469490.png)![1686727472663](image/README/1686727472663.png)
+![1686799470451](image/README/1686799470451.png)![1686799453891](image/README/1686799453891.png)
 
 # 目录结构
 

@@ -1,8 +1,14 @@
-import { Layout as AntdLayout, Button, Row, Space, Tag } from "antd";
+import {
+  Layout as AntdLayout,
+  Button,
+  Row,
+  Space,
+  Tag,
+} from "antd";
 import { memo, useCallback, useState } from "react";
 import styled from "styled-components";
 import SiderMenu from "./SiderMenu";
-import { HeaderHeight, deepColor } from "@/styles/theme";
+import { HeaderHeight } from "@/styles/config";
 import logo from "@/assets/react.png";
 import {
   MenuUnfoldOutlined,
@@ -15,6 +21,8 @@ import RouterTabs from "./RouterTabs";
 import KeepAlive from "./KeepAlive";
 import { CallbackItem } from "@/types/common";
 import { Rotate } from "@/styles/global";
+import { ThemeState } from "@/store/modules/theme";
+import ColorSelect from "@/components/ColorSelect";
 const { Header, Sider, Content } = AntdLayout;
 
 const Layout = () => {
@@ -25,16 +33,16 @@ const Layout = () => {
     dispatch({ type: "user/logout" });
     navigate("/login", { replace: true });
   };
-
+  const themeConfig = useAppSelector((state) => state.theme.config);
   const tabs = useAppSelector((state) => state.tab.tabs);
   const menuSelect = useCallback(
     (value: CallbackItem) => {
       dispatch({
         type: "tab/navigate",
         payload: {
-          label:value.label,
-          key:value.key
-        }
+          label: value.label,
+          key: value.key,
+        },
       });
     },
     [tabs]
@@ -44,7 +52,7 @@ const Layout = () => {
     <>
       <AntdLayout style={{ height: "100vh" }}>
         <LaySider collapsed={collapsed} width={200} collapsible trigger={null}>
-          <SiderTitle>
+          <SiderTitle config={themeConfig}>
             <TitleLogo src={logo} width={30} height={30} alt="logo"></TitleLogo>
             {!collapsed && <TitleFont>Manage Backend</TitleFont>}
           </SiderTitle>
@@ -60,6 +68,7 @@ const Layout = () => {
                 <UserTag icon={<UserOutlined />} bordered={false}>
                   admin
                 </UserTag>
+                <ColorSelect />
                 <Button type="primary" onClick={loginOut}>
                   退出登录
                 </Button>
@@ -116,7 +125,8 @@ const Container = styled.div`
 const SiderTitle = styled.div`
   height: ${HeaderHeight};
   width: 100%;
-  background-color: ${deepColor};
+  background-color: ${(props: { config: ThemeState["config"] }) =>
+    props.config.token.colorPrimary};
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -124,7 +134,7 @@ const SiderTitle = styled.div`
 `;
 const TitleLogo = styled.img`
   animation: ${Rotate} 4s linear infinite;
-`
+`;
 const TitleFont = styled.div`
   white-space: nowrap;
   font-size: 16px;
@@ -136,4 +146,6 @@ const UserTag = styled(Tag)`
   line-height: 32px;
   font-size: 14px;
 `;
+
+
 export default memo(Layout);

@@ -5,7 +5,8 @@ import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 // 引入每一个reducer
 import tab from "./modules/tab";
 import routes from "./modules/routes";
-export const store = configureStore({ reducer: { tab, routes } });
+import theme from "./modules/theme";
+export const store = configureStore({ reducer: { tab, routes,theme } });
 
 // 全局定义 dispatch和state的类型
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,9 +1,9 @@
 import {memo} from 'react'
 
-function demo() {
+function Demo() {
   return (
     <div>一个组件</div>
   )
 }
 
-export default memo(demo)
+export default memo(Demo)

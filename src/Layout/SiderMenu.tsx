@@ -1,4 +1,4 @@
-import { HeaderHeight, deepColor, theme } from "@/styles/theme";
+import { HeaderHeight } from "@/styles/config";
 import { ConfigProvider, Menu } from "antd";
 import styled from "styled-components";
 import { MenuItem, getItemInfo, getMenuItem } from "@/utils/index";
@@ -7,31 +7,22 @@ import { CallbackItem } from "@/types/common";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { useLocation } from "react-router-dom";
 import { filterRoutes, routesProps } from "@/router/routes";
-const MenuContainer = styled(Menu)`
-  background: linear-gradient(
-    to bottom,
-    ${deepColor},
-    ${theme.token.colorPrimary}
-  );
-  color: white;
-  height: calc(100vh - ${HeaderHeight});
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-const themeStyle = {
-  token: {
-    //悬停背景色
-    colorBgTextHover: "white",
-    colorText: theme.token.colorPrimary,
-  },
-};
+import { ThemeState } from "@/store/modules/theme";
+
 interface Props {
   menuSelect: (value: CallbackItem) => void;
 }
 const SiderMenu = ({ menuSelect }: Props) => {
   const activeTab = useAppSelector((state) => state.tab.activeTab);
+  const themeConfig = useAppSelector((state) => state.theme.config);
+  const deepcolor = useAppSelector((state) => state.theme.deepcolor);
+  const themeStyle = {
+    token: {
+      //悬停背景色
+      colorBgTextHover: "white",
+      colorText: themeConfig.token.colorPrimary,
+    },
+  };
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
   //处理生成菜单数据
@@ -74,9 +65,24 @@ const SiderMenu = ({ menuSelect }: Props) => {
         onOpenChange={(keys) => setOpenKeys(keys)}
         selectedKeys={[activeTab]}
         items={items}
+        config={themeConfig}
+        deepcolor={deepcolor}
       ></MenuContainer>
     </ConfigProvider>
   );
 };
 
+const MenuContainer = styled(Menu)`
+  background: linear-gradient(
+    to bottom,
+    ${(props:ThemeState)=>props.config.token.colorPrimary},
+    ${(props:ThemeState)=>props.deepcolor}
+  );
+  color: white;
+  height: calc(100vh - ${HeaderHeight});
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 export default memo(SiderMenu);

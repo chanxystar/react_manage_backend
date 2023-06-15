@@ -1,4 +1,3 @@
-import { theme } from "@/styles/theme";
 import { InfoCircleOutlined, TeamOutlined } from "@ant-design/icons";
 import {
   Avatar,
@@ -16,7 +15,8 @@ import { ReactNode, memo, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import reactLogo from "@/assets/react.png";
 import dayjs from "dayjs";
-import { useAppDispatch } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { ThemeState } from "@/store/modules/theme";
 
 const Home = () => {
   const [date, setDate] = useState("");
@@ -24,6 +24,7 @@ const Home = () => {
     setDate(dayjs(Date.now()).format("YYYY年MM月DD日"));
   }, []);
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const themeConfig = useAppSelector((state) => state.theme.config);
   interface SystemRecord {
     icon: ReactNode;
     title: string;
@@ -32,23 +33,24 @@ const Home = () => {
   }
   const systemList: SystemRecord[] = [
     {
-      icon: <TeamOutlined  style={{ fontSize: 18 }} />,
+      icon: <TeamOutlined style={{ fontSize: 18 }} />,
       title: "React",
       subTitle: "用于构建 Web 和原生交互界面的库",
       url: "https://react.docschina.org/",
     },
     {
-      icon: <TeamOutlined  style={{ fontSize: 18 }} />,
+      icon: <TeamOutlined style={{ fontSize: 18 }} />,
       title: "Ant Design",
-      subTitle: "助力设计开发者「更灵活」地搭建出「更美」的产品，让用户「快乐工作」",
+      subTitle:
+        "助力设计开发者「更灵活」地搭建出「更美」的产品，让用户「快乐工作」",
       url: "https://ant-design.antgroup.com/index-cn",
     },
     {
-      icon: <TeamOutlined  style={{ fontSize: 18 }} />,
+      icon: <TeamOutlined style={{ fontSize: 18 }} />,
       title: "Vite",
       subTitle: "下一代前端开发与构建工具",
       url: "https://vitejs.cn/",
-    }
+    },
   ];
   const SystemCard = ({ item }: { item: SystemRecord }) => {
     const go = () => {
@@ -104,12 +106,12 @@ const Home = () => {
         payload: {
           key: item.path,
           label: item.title,
-        }
+        },
       });
     };
     return (
       <>
-        <NavigationGrid key={item.path} onClick={go}>
+        <NavigationGrid config={themeConfig} key={item.path} onClick={go}>
           {item.title}
         </NavigationGrid>
       </>
@@ -122,13 +124,14 @@ const Home = () => {
           <Row justify={"start"} align={"middle"} gutter={[100, 0]}>
             <Col span={2}>
               <RotateAvatar
+                config={themeConfig}
                 size={80}
                 icon={<Image src={reactLogo} preview={false} />}
               />
             </Col>
             <Col span={20}>
-              <SayHello>
-                基于React18  AntDesign5   TypeScript 的后台管理系统
+              <SayHello config={themeConfig}>
+                基于React18 AntDesign5 TypeScript 的后台管理系统
               </SayHello>
               <SubHello>
                 集成封装了axios、redux、react-router-dom、styled-components等常用库,封装了可配置化的全局主题变量，设置了vite跨域处理，同时预留了权限管理路由的接口，内部实现了单页面页签功能，详情阅读README文档
@@ -146,7 +149,7 @@ const Home = () => {
               title="你所在的时间线"
               formatter={(value) => <>{value}</>}
               value={date}
-              valueStyle={{ color: theme.token.colorPrimary }}
+              valueStyle={{ color: themeConfig.token.colorPrimary }}
             />
           </Card>
         </Col>
@@ -164,7 +167,7 @@ const Home = () => {
             <Result
               icon={
                 <InfoCircleOutlined
-                  style={{ color: theme.token.colorPrimary }}
+                  style={{ color: themeConfig.token.colorPrimary }}
                 />
               }
               title="期待你的开发"
@@ -197,7 +200,7 @@ const Home = () => {
 const SayHello = styled(Row)`
   font-size: 18px;
   font-weight: 600;
-  color: ${theme.token.colorPrimary};
+  color: ${(props: ThemeState) => props.config.token.colorPrimary};
   line-height: 36px;
 `;
 
@@ -217,7 +220,7 @@ const rotate = keyframes`
 `;
 const RotateAvatar = styled(Avatar)`
   animation: ${rotate} 5s linear infinite;
-  background-color: ${theme.token.colorPrimary};
+  background-color: ${(props: ThemeState) => props.config.token.colorPrimary};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -239,7 +242,7 @@ const NavigationGrid = styled(Card.Grid)`
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
-  color: ${theme.token.colorPrimary};
+  color: ${(props: ThemeState) => props.config.token.colorPrimary};
 `;
 
 export default memo(Home);

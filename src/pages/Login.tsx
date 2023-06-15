@@ -11,14 +11,18 @@ import {
 } from "@ant-design/icons";
 
 import { useNavigate } from "react-router-dom";
-import { deepColor, theme } from "@/styles/theme";
 import { Rotate } from "@/styles/global";
+import { useAppSelector } from "@/store";
+import { ThemeState } from "@/store/modules/theme";
 interface Formstate {
   username: string;
   password: string;
   remember: boolean;
 }
 export default function Login() {
+  const themeConfig = useAppSelector((state) => state.theme.config);
+  const deepcolor = useAppSelector((state) => state.theme.deepcolor);
+
   const navigate = useNavigate();
   //表单数据
   const [form] = Form.useForm<Formstate>();
@@ -34,10 +38,12 @@ export default function Login() {
   return (
     <>
       <Container>
-        <LoginBg />
+        <LoginBg config={themeConfig} deepcolor={deepcolor} />
         <LoginImage src={login_img} width={600} height={"auto"}></LoginImage>
         <LoginBox>
-          <Title><IconBox src={react_icon}></IconBox>ManageBackend</Title>
+          <Title>
+            <IconBox src={react_icon}></IconBox>ManageBackend
+          </Title>
           <Form
             name="dynamic_rule"
             form={form}
@@ -120,8 +126,8 @@ const LoginBg = styled.div`
     height: 150%;
     background: linear-gradient(
       to bottom,
-      ${theme.token.colorPrimary},
-      ${deepColor}
+      ${(props: ThemeState) => props.config.token.colorPrimary} 70%,
+      ${(props: ThemeState) => props.deepcolor}
     );
     transform: rotateZ(-13deg) translateX(-7%) translateY(-20%);
   }
@@ -156,11 +162,10 @@ const Title = styled.div`
   align-items: center;
 `;
 
-
 const IconBox = styled.img`
   animation: ${Rotate} 4s linear infinite;
   margin-right: 10px;
-`
+`;
 const LoginButton = styled(Button)`
   width: 100%;
 `;
