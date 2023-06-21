@@ -1,11 +1,5 @@
-import {
-  Layout as AntdLayout,
-  Button,
-  Row,
-  Space,
-  Tag,
-} from "antd";
-import { memo, useCallback, useState } from "react";
+import { Layout as AntdLayout, Button, Row, Space, Tag } from "antd";
+import {  memo, useCallback, useState } from "react";
 import styled from "styled-components";
 import SiderMenu from "./SiderMenu";
 import { HeaderHeight } from "@/styles/config";
@@ -15,10 +9,9 @@ import {
   MenuFoldOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store";
 import RouterTabs from "./RouterTabs";
-import KeepAlive from "./KeepAlive";
 import { CallbackItem } from "@/types/common";
 import { Rotate } from "@/styles/global";
 import { ThemeState } from "@/store/modules/theme";
@@ -78,7 +71,9 @@ const Layout = () => {
           <LayContent>
             <RouterTabs />
             <Container>
-              <KeepAlive tabs={tabs}></KeepAlive>
+             
+                <Outlet />
+        
             </Container>
           </LayContent>
         </AntdLayout>
@@ -146,6 +141,8 @@ const UserTag = styled(Tag)`
   line-height: 32px;
   font-size: 14px;
 `;
-
+const SpinContainer = styled(Row)`
+  height: 60vh;
+`;
 
 export default memo(Layout);

@@ -1,9 +1,7 @@
-import {memo} from 'react'
+import { memo } from "react";
 
 function Product() {
-  return (
-    <div>开始开发吧</div>
-  )
+  return <div>开始开发吧</div>;
 }
 
-export default memo(Product)
+export default memo(Product);

@@ -1,12 +1,10 @@
 import { RouteRecord, RoutesList } from "./index.d";
-import {
-  HddFilled,
-  DashboardFilled,
-} from "@ant-design/icons";
-import { lazy } from "react";
+import { HddFilled, DashboardFilled } from "@ant-design/icons";
 import Layout from "@/Layout";
+import { lazy } from "react";
 const Home = lazy(() => import("@/pages/Home"));
 const Product = lazy(() => import("@/pages/info/product"));
+
 //本地的路由配置,如果需要从后端获取路由配置,可以跟这个路由表比对过滤后，再传props给APP中的Router
 export const routesProps: RouteRecord[] = [
   {
@@ -22,6 +20,7 @@ export const routesProps: RouteRecord[] = [
           hidden: false,
           title: "工作台",
           icon: <DashboardFilled />,
+          keep: true
         },
       },
       {
@@ -40,6 +39,7 @@ export const routesProps: RouteRecord[] = [
             meta: {
               hidden: false,
               title: "货品信息",
+              keep: true
             },
           },
         ],
@@ -47,6 +47,7 @@ export const routesProps: RouteRecord[] = [
     ],
   },
 ];
+
 //路由过滤函数
 export function filterRoutes(
   routes: RouteRecord[],

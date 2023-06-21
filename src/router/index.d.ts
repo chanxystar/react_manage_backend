@@ -3,6 +3,7 @@ import { ReactNode } from "react";
     hidden?:boolean;
     icon?:ReactNode;
     title:string;
+    keep?:boolean;
 }
 export interface RouteRecord {
   path:string;
