@@ -153,9 +153,7 @@ const RouterTabs = () => {
       </Row>
     );
   };
-  // const refresh = () => {
-  //   dispatch({ type: "tab/reload", payload: true });
-  // };
+  
   const clearAll = () => {
     clear();
     dispatch({
