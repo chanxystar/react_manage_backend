@@ -47,7 +47,7 @@ export const BeforeRouter = () => {
 };
 ```
 
-支持传入路由表计算返回虚拟dom的高阶组件，KeepAlive实现引用第三方库[react-activation](https://github.com/CJY0208/react-activation/tree/27eb748f729742bbf9d99661b2bd7c05f967a936)
+支持传入路由表计算返回虚拟dom的高阶组件
 
 ```typescript
 const generRoutes = (routes: RouteRecord[]) => {
@@ -80,7 +80,7 @@ export default function Router() {
 }
 ```
 
-### 内部实现集成了可拖拽的页签功能
+### 内部实现了keepAlive功能，并且集成了可拖拽的页签功能
 
 ```typescript
 <Tabs

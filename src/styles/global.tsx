@@ -1,4 +1,3 @@
-import { Row } from "antd";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 
 //全局样式
@@ -34,19 +33,14 @@ export const SubTitle = styled.div`
   font-size: 16px;
   font-weight: 600;
   margin: 20px 0;
-`;
+`
 
 //旋转样式
-export const Rotate = keyframes`
+ export const Rotate = keyframes`
    from {
       transform: rotateZ(0deg);
    }
    to{
     transform: rotateZ(360deg);
    }
-`;
-
-//路由页面加载spin容器
-export const SpinContainer = styled(Row)`
-  height: 60vh;
-`;
+`
