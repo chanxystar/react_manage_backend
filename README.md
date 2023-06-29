@@ -12,6 +12,9 @@
 
 该项目是基于react18 typescript，由vite创建的集成了基础功能的纯净后台项目，方便快速上手开发自己业务专属的管理中后台系统
 
+# 项目截图
+
+![1686799470451](image/README/1686799470451.png)![1686799453891](image/README/1686799453891.png)
 # 项目特点
 
 集成封装了axios、redux、react-router-dom、styled-components等常用库,封装了主题色变更组件，设置了vite跨域处理，同时预留了权限管理路由的接口，内部实现了单页面页签功能
@@ -160,10 +163,6 @@ export default request;
       </Button>
     </Popover>
 ```
-
-# 项目截图
-
-![1686799470451](image/README/1686799470451.png)![1686799453891](image/README/1686799453891.png)
 
 # 目录结构
 
