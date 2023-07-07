@@ -1,7 +1,8 @@
 import { RouteRecord, RoutesList } from "@/router/index.d";
 import { MenuProps } from "antd";
 export type MenuItem = Required<MenuProps>["items"][number];
-export function getMenuItem(route: RouteRecord): MenuItem {
+export function getMenuItem(route: RouteRecord): MenuItem | false {
+  if(route.meta?.hidden) return false;
   return {
     key: route.path,
     icon: route.meta?.icon,
@@ -9,6 +10,7 @@ export function getMenuItem(route: RouteRecord): MenuItem {
       return getMenuItem(e);
     }),
     label: route.meta?.title,
+    title: route.meta?.title
   } as MenuItem;
 }
 

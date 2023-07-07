@@ -5,8 +5,7 @@ import { MenuItem, getItemInfo, getMenuItem } from "@/utils/index";
 import { memo, useEffect, useState } from "react";
 import { CallbackItem } from "@/types/common";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { useLocation } from "react-router-dom";
-import { filterRoutes, routesProps } from "@/router/routes";
+import { useLocation, useRouteLoaderData } from "react-router-dom";
 import { ThemeState } from "@/store/modules/theme";
 
 interface Props {
@@ -27,12 +26,15 @@ const SiderMenu = ({ menuSelect }: Props) => {
   const { pathname } = useLocation();
   //处理生成菜单数据
   const { list } = useAppSelector((state) => state.routes);
-  const routes = filterRoutes(routesProps, list)[0].children;
-  const items = routes?.map((item) => {
-    if (item.meta?.hidden) return;
-    return getMenuItem(item);
-  }) as MenuItem[];
+  // const routes = filterRoutes(routesProps, list)[0].children;
+  // const items = routes?.map((item) => {
+  //   if (item.meta?.hidden) return;
+  //   return getMenuItem(item);
+  // }) as MenuItem[];
+  const items: any = [];
   const onClick = (e: { key: string }) => {
+    console.log(e);
+
     const res = getItemInfo(e.key, items);
     dispatch({ type: "tab/setActiveTab", payload: activeTab });
     res && menuSelect(res as CallbackItem);
@@ -75,8 +77,8 @@ const SiderMenu = ({ menuSelect }: Props) => {
 const MenuContainer = styled(Menu)`
   background: linear-gradient(
     to bottom,
-    ${(props:ThemeState)=>props.config.token.colorPrimary},
-    ${(props:ThemeState)=>props.deepcolor}
+    ${(props: ThemeState) => props.config.token.colorPrimary},
+    ${(props: ThemeState) => props.deepcolor}
   );
   color: white;
   height: calc(100vh - ${HeaderHeight});
