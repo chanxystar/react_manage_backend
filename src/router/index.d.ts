@@ -17,3 +17,12 @@ interface RoutesList {
   path: string;
   children?: RoutesList[];
 }
+
+
+export interface BaseRoute{
+  path:string;
+  element?:ReactNode;
+  id?:string;
+  children?:BaseRoute[];
+  loader?:()=>Meta
+}

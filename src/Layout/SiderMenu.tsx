@@ -1,12 +1,14 @@
 import { HeaderHeight } from "@/styles/config";
 import { ConfigProvider, Menu } from "antd";
 import styled from "styled-components";
-import { MenuItem, getItemInfo, getMenuItem } from "@/utils/index";
-import { memo, useEffect, useState } from "react";
+import { exchangeRoutes, getMenus } from "@/utils/routes";
+import { memo, useEffect, useMemo, useState } from "react";
 import { CallbackItem } from "@/types/common";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { useLocation, useRouteLoaderData } from "react-router-dom";
 import { ThemeState } from "@/store/modules/theme";
+import { baseRoutes } from "@/router/routes";
+import { Meta } from "@/router/index.d";
 
 interface Props {
   menuSelect: (value: CallbackItem) => void;
@@ -26,27 +28,29 @@ const SiderMenu = ({ menuSelect }: Props) => {
   const { pathname } = useLocation();
   //处理生成菜单数据
   const { list } = useAppSelector((state) => state.routes);
-  // const routes = filterRoutes(routesProps, list)[0].children;
-  // const items = routes?.map((item) => {
-  //   if (item.meta?.hidden) return;
-  //   return getMenuItem(item);
-  // }) as MenuItem[];
-  const items: any = [];
-  const onClick = (e: { key: string }) => {
-    console.log(e);
+  const items = useMemo(() => {
+    return getMenus(exchangeRoutes(baseRoutes, list));
+  }, [list]);
 
-    const res = getItemInfo(e.key, items);
-    dispatch({ type: "tab/setActiveTab", payload: activeTab });
-    res && menuSelect(res as CallbackItem);
+  const onClick = (e: { key: string; item: any }) => {
+    menuSelect({
+      key: e.key,
+      label: e.item.props.title,
+    });
   };
   const [openKeys, setOpenKeys] = useState<string[]>([]);
+
+  //根据pathname初始化tabs
+  const label = (useRouteLoaderData(pathname) as Meta | undefined)?.title;
   useEffect(() => {
-    //根据pathname初始化tabs
     if (pathname === "/") {
       menuSelect({ key: "/home", label: "工作台" });
     } else if (pathname !== "/" && !activeTab) {
-      const res = getItemInfo(pathname, items);
-      res && menuSelect(res as CallbackItem);
+      if (!label) return;
+      menuSelect({
+        key: pathname,
+        label,
+      });
     }
   }, []);
   useEffect(() => {
