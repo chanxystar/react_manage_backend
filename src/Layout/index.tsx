@@ -42,12 +42,12 @@ const Layout = () => {
         payload: {
           label: value.label,
           key: value.key,
+          isMenu: true
         },
       });
     },
     [tabs]
   );
-
   return (
     <>
       <AntdLayout style={{ height: "100vh" }}>

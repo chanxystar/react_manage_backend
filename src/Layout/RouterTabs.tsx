@@ -71,9 +71,8 @@ const DraggableTabNode = ({
 const RouterTabs = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch()
-
   const tabs = useAppSelector((state)=>state.tab.tabs)
-  const activeTab = useAppSelector((state)=>state.tab.activeTab)
+  const activeKey = useAppSelector((state)=>state.tab.activeKey)
   const [items, setItems] = useState<
     {
       key: string;
@@ -87,21 +86,19 @@ const RouterTabs = () => {
   useEffect(()=>{
     window.onbeforeunload = function () {
       sessionStorage.setItem("tabs", JSON5.stringify(tabs));
-      sessionStorage.setItem("activeTab", JSON5.stringify(activeTab));
+      sessionStorage.setItem("activeKey", JSON5.stringify(activeKey));
     };
-  },[tabs,activeTab])
+  },[tabs,activeKey])
   useEffect(() => {
     setItems(tabs);
     tabs.length === 1 ? setTabsType("card") : setTabsType("editable-card");
   }, [tabs]);
-  useEffect(() => {
-    navigate(activeTab)
-  }, [activeTab]);
-
   const tabChange = (key: string) => {
-    navigate(key);
-    dispatch({type:'tab/setActiveTab',payload:key})
+    dispatch({type:'tab/setActiveKey',payload:key})
   };
+  useEffect(()=>{
+    navigate(activeKey)
+  },[activeKey])
 
   //拖拽结束
   const onDragEnd = ({ active, over }: DragEndEvent) => {
@@ -121,8 +118,8 @@ const RouterTabs = () => {
   ) => {
     if (action === "remove") {
       const newItems = items.filter((item) => item.key !== targetKey);
-      if (activeTab === targetKey) {
-        dispatch({type:'tab/setActiveTab',payload:newItems[newItems.length - 1].key})
+      if (activeKey === targetKey) {
+        dispatch({type:'tab/setactiveKey',payload:newItems[newItems.length - 1].key})
         navigate(newItems[newItems.length - 1].key);
       }
       setItems(newItems);
@@ -156,7 +153,7 @@ const RouterTabs = () => {
         label: "工作台",
       },
     ]})
-    dispatch({type:'tab/setActiveTab',payload:'/home'})
+    dispatch({type:'tab/setactiveKey',payload:'/home'})
     navigate("/home");
   };
   return (
@@ -166,7 +163,7 @@ const RouterTabs = () => {
       hideAdd
       className={className}
       items={items}
-      activeKey={activeTab}
+      activeKey={activeKey}
       onEdit={onEdit}
       onChange={tabChange}
       tabBarExtraContent={renderExtraContent()}

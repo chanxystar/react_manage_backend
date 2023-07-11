@@ -12,7 +12,7 @@ interface Props {
 }
 function KeepAlive({ tabs }: Props) {
   const componentList = useRef(new Map());
-  const activeTab = useAppSelector((state) => state.tab.activeTab);
+  const activeKey = useAppSelector((state) => state.tab.activeKey);
   const outLet = useOutlet();
   const { pathname } = useLocation();
   const loading = useAppSelector((state) => state.tab.loading);
@@ -25,7 +25,7 @@ function KeepAlive({ tabs }: Props) {
       componentList.current.set(pathname, outLet);
     }
     forceUpdate();
-  }, [pathname, endloading, activeTab]);
+  }, [pathname, endloading, activeKey]);
   useEffect(() => {
     componentList.current.forEach((_value, key) => {
       if (!tabs.some((tab) => tab.key === key)) {

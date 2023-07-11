@@ -1,20 +1,20 @@
 import { HeaderHeight } from "@/styles/config";
 import { ConfigProvider, Menu } from "antd";
 import styled from "styled-components";
-import { exchangeRoutes, getMenus } from "@/utils/routes";
+import { filterToMenu, getMenus } from "@/utils/menu";
 import { memo, useEffect, useMemo, useState } from "react";
 import { CallbackItem } from "@/types/common";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { useLocation, useRouteLoaderData } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { ThemeState } from "@/store/modules/theme";
 import { baseRoutes } from "@/router/routes";
-import { Meta } from "@/router/index.d";
+import { getRoute } from "@/utils/router";
 
 interface Props {
   menuSelect: (value: CallbackItem) => void;
 }
 const SiderMenu = ({ menuSelect }: Props) => {
-  const activeTab = useAppSelector((state) => state.tab.activeTab);
+  const activeKey = useAppSelector((state) => state.tab.activeKey);
   const themeConfig = useAppSelector((state) => state.theme.config);
   const deepcolor = useAppSelector((state) => state.theme.deepcolor);
   const themeStyle = {
@@ -24,44 +24,69 @@ const SiderMenu = ({ menuSelect }: Props) => {
       colorText: themeConfig.token.colorPrimary,
     },
   };
-  const dispatch = useAppDispatch();
   const { pathname } = useLocation();
+  const dispatch = useAppDispatch();
   //处理生成菜单数据
-  const { list } = useAppSelector((state) => state.routes);
   const items = useMemo(() => {
-    return getMenus(exchangeRoutes(baseRoutes, list));
-  }, [list]);
-
-  const onClick = (e: { key: string; item: any }) => {
-    menuSelect({
-      key: e.key,
-      label: e.item.props.title,
+    return getMenus(filterToMenu(baseRoutes));
+  }, []);
+  const onClick = ({
+    key,
+    item,
+  }: {
+    key: string;
+    item: any;
+  }) => {
+    dispatch({
+      type: "tab/navigate",
+      payload: {
+        key,
+        label: item.props.title,
+        isMenu: true,
+      },
     });
   };
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
   //根据pathname初始化tabs
-  const label = (useRouteLoaderData(pathname) as Meta | undefined)?.title;
   useEffect(() => {
+    console.log(pathname);
+    
     if (pathname === "/") {
       menuSelect({ key: "/home", label: "工作台" });
-    } else if (pathname !== "/" && !activeTab) {
-      if (!label) return;
-      menuSelect({
-        key: pathname,
-        label,
-      });
+    } else if (pathname !== "/") {
+      const currentRoute = getRoute(pathname,baseRoutes); 
+      if (currentRoute) {
+        //如果不是菜单路由，则不触发菜单选择
+        if (currentRoute.meta.hidden) {
+          dispatch({
+            type: "tab/navigate",
+            payload: {
+              key: currentRoute.path,
+              label: currentRoute.meta.title,
+              isMenu: false,
+            },
+          });
+        } else {
+          menuSelect({
+            key: currentRoute.path,
+            label: currentRoute.meta.title,
+          });
+        }
+      }
     }
-  }, []);
+  }, [pathname]);
+
+  //根据activeKey来检索当前需要展开的菜单
   useEffect(() => {
     let key = "";
     for (const item of items) {
       (item as any).children?.map((child: any) => {
-        child.key === activeTab && (key = (item as any).key);
+        child.key === activeKey && (key = (item as any).key);
       });
     }
-    setOpenKeys([key]);
-  }, [activeTab]);
+    key===""?setOpenKeys([]): setOpenKeys([key]);
+  }, [activeKey]);
   return (
     <ConfigProvider theme={themeStyle}>
       <MenuContainer
@@ -69,7 +94,7 @@ const SiderMenu = ({ menuSelect }: Props) => {
         mode="inline"
         openKeys={openKeys}
         onOpenChange={(keys) => setOpenKeys(keys)}
-        selectedKeys={[activeTab]}
+        selectedKeys={[activeKey]}
         items={items}
         config={themeConfig}
         deepcolor={deepcolor}

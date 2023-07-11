@@ -22,7 +22,7 @@ interface RoutesList {
 export interface BaseRoute{
   path:string;
   element?:ReactNode;
-  id?:string;
+  name:string;
   children?:BaseRoute[];
-  loader?:()=>Meta
+  meta:Meta
 }

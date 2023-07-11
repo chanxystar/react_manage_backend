@@ -1,15 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import JSON5 from "json5";
+
+interface Tab {
+  key: string;
+  label: string;
+  isMenu: boolean;
+}
 interface TabState {
   loading: boolean;
-  tabs: { key: string; label: string }[];
-  activeTab: string;
+  tabs: Tab[];
+  activeKey: string;
 }
 
 const initialState: TabState = {
   loading: false,
   tabs: JSON5.parse(sessionStorage.getItem("tabs") as string) || [],
-  activeTab: JSON5.parse(sessionStorage.getItem("activeTab") as string) || "",
+  activeKey: JSON5.parse(sessionStorage.getItem("activeKey") as string) || ''
 };
 
 const tabSlice = createSlice({
@@ -22,18 +28,29 @@ const tabSlice = createSlice({
     setTabs(state, action) {
       state.tabs = action.payload;
     },
-    navigate(state, action) {
-      const tab = state.tabs.find((item) => item.key === action.payload.key);
-      if (!tab) {
-        state.tabs.push(action.payload);
-        state.activeTab = action.payload.key;
-      }else{
-        state.activeTab = action.payload.key;
+    navigate(
+      state,
+      action: {
+        payload: { key: string; label: string; isMenu: boolean };
+      }
+    ) {
+      const { key, label, isMenu } = action.payload;
+      const tab = state.tabs.find((item) => item.key === key);
+      if (tab) {
+        state.activeKey = key;
+      } else {
+        state.tabs.push({ key, label, isMenu });
+        state.activeKey = isMenu ? key : "";
       }
     },
-    setActiveTab(state, action) {
-      state.activeTab = action.payload;
-    }
+    setActiveKey(
+      state,
+      action: {
+        payload: string;
+      }
+    ) {
+      state.activeKey = action.payload;
+    },
   },
 });
 
