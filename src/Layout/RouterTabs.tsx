@@ -2,7 +2,6 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import { CloseOutlined, ReloadOutlined } from "@ant-design/icons";
 import type { DragEndEvent } from "@dnd-kit/core";
 import { DndContext, PointerSensor, useSensor } from "@dnd-kit/core";
-import JSON5 from "json5";
 
 import {
   arrayMove,
