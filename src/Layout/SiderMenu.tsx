@@ -50,8 +50,6 @@ const SiderMenu = ({ menuSelect }: Props) => {
 
   //根据pathname初始化tabs
   useEffect(() => {
-    console.log(pathname);
-    
     if (pathname === "/") {
       menuSelect({ key: "/home", label: "工作台" });
     } else if (pathname !== "/") {

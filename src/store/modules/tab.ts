@@ -15,7 +15,7 @@ interface TabState {
 const initialState: TabState = {
   loading: false,
   tabs: JSON5.parse(sessionStorage.getItem("tabs") as string) || [],
-  activeKey: JSON5.parse(sessionStorage.getItem("activeKey") as string) || ''
+  activeKey: JSON5.parse(sessionStorage.getItem("activeKey") as string) || "",
 };
 
 const tabSlice = createSlice({
@@ -36,11 +36,9 @@ const tabSlice = createSlice({
     ) {
       const { key, label, isMenu } = action.payload;
       const tab = state.tabs.find((item) => item.key === key);
-      if (tab) {
-        state.activeKey = key;
-      } else {
+      state.activeKey = key;
+      if (!tab) {
         state.tabs.push({ key, label, isMenu });
-        state.activeKey = isMenu ? key : "";
       }
     },
     setActiveKey(

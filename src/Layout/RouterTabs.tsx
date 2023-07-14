@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import { CloseOutlined, ReloadOutlined } from "@ant-design/icons";
 import type { DragEndEvent } from "@dnd-kit/core";
 import { DndContext, PointerSensor, useSensor } from "@dnd-kit/core";
-import JSON5 from 'json5';
+import JSON5 from "json5";
 
 import {
   arrayMove,
@@ -70,9 +70,9 @@ const DraggableTabNode = ({
 
 const RouterTabs = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch()
-  const tabs = useAppSelector((state)=>state.tab.tabs)
-  const activeKey = useAppSelector((state)=>state.tab.activeKey)
+  const dispatch = useAppDispatch();
+  const tabs = useAppSelector((state) => state.tab.tabs);
+  const activeKey = useAppSelector((state) => state.tab.activeKey);
   const [items, setItems] = useState<
     {
       key: string;
@@ -83,22 +83,17 @@ const RouterTabs = () => {
   const sensor = useSensor(PointerSensor, {
     activationConstraint: { distance: 10 },
   });
-  useEffect(()=>{
-    window.onbeforeunload = function () {
-      sessionStorage.setItem("tabs", JSON5.stringify(tabs));
-      sessionStorage.setItem("activeKey", JSON5.stringify(activeKey));
-    };
-  },[tabs,activeKey])
+
   useEffect(() => {
     setItems(tabs);
     tabs.length === 1 ? setTabsType("card") : setTabsType("editable-card");
   }, [tabs]);
   const tabChange = (key: string) => {
-    dispatch({type:'tab/setActiveKey',payload:key})
+    dispatch({ type: "tab/setActiveKey", payload: key });
   };
-  useEffect(()=>{
-    navigate(activeKey)
-  },[activeKey])
+  useEffect(() => {
+    navigate(activeKey);
+  }, [activeKey]);
 
   //拖拽结束
   const onDragEnd = ({ active, over }: DragEndEvent) => {
@@ -119,11 +114,14 @@ const RouterTabs = () => {
     if (action === "remove") {
       const newItems = items.filter((item) => item.key !== targetKey);
       if (activeKey === targetKey) {
-        dispatch({type:'tab/setactiveKey',payload:newItems[newItems.length - 1].key})
+        dispatch({
+          type: "tab/setactiveKey",
+          payload: newItems[newItems.length - 1].key,
+        });
         navigate(newItems[newItems.length - 1].key);
       }
       setItems(newItems);
-      dispatch({type:'tab/setTabs',payload:newItems})
+      dispatch({ type: "tab/setTabs", payload: newItems });
     }
   };
 
@@ -147,18 +145,21 @@ const RouterTabs = () => {
     dispatch({ type: "tab/reload", payload: true });
   };
   const clearAll = () => {
-    dispatch({type:'tab/setTabs',payload:[
-      {
-        key: "/home",
-        label: "工作台",
-      },
-    ]})
-    dispatch({type:'tab/setactiveKey',payload:'/home'})
+    dispatch({
+      type: "tab/setTabs",
+      payload: [
+        {
+          key: "/home",
+          label: "工作台",
+        },
+      ],
+    });
+    dispatch({ type: "tab/setactiveKey", payload: "/home" });
     navigate("/home");
   };
   return (
     <Tabs
-      style={{marginTop:10}}
+      style={{ marginTop: 10 }}
       type={tabsType}
       hideAdd
       className={className}

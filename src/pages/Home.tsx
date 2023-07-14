@@ -15,8 +15,9 @@ import { ReactNode, memo, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import reactLogo from "@/assets/react.png";
 import dayjs from "dayjs";
-import { useAppDispatch, useAppSelector } from "@/store";
+import { useAppSelector } from "@/store";
 import { ThemeState } from "@/store/modules/theme";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [date, setDate] = useState("");
@@ -98,16 +99,10 @@ const Home = () => {
       path: "/unknown",
     },
   ];
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const NavigationCard = ({ item }: { item: NavigateRecord }) => {
     const go = () => {
-      dispatch({
-        type: "tab/navigate",
-        payload: {
-          key: item.path,
-          label: item.title,
-        },
-      });
+      navigate(item.path);
     };
     return (
       <>

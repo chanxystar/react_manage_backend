@@ -35,19 +35,16 @@ const Layout = () => {
   };
   const themeConfig = useAppSelector((state) => state.theme.config);
   const tabs = useAppSelector((state) => state.tab.tabs);
-  const menuSelect = useCallback(
-    (value: CallbackItem) => {
-      dispatch({
-        type: "tab/navigate",
-        payload: {
-          label: value.label,
-          key: value.key,
-          isMenu: true
-        },
-      });
-    },
-    [tabs]
-  );
+  const menuSelect = (value: CallbackItem) => {
+    dispatch({
+      type: "tab/navigate",
+      payload: {
+        label: value.label,
+        key: value.key,
+        isMenu: true
+      },
+    });
+  }
   return (
     <>
       <AntdLayout style={{ height: "100vh" }}>

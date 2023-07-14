@@ -1,11 +1,21 @@
 # 安装方法
 
-```javascript
 确定你已经安装了node,版本16及以上
 在项目根目录打开命令终端
 运行指令npm install 或者 pnpm install
 安装完成后运行npm run dev 或者 pnpm run dev可运行项目
 登录页面开放 随意填入账号密码即可登录
+
+安装依赖（推荐pnpm)
+
+```javascript
+pnpm install or npm install
+```
+
+运行项目
+
+```javascript
+pnpm run dev or npm run dev
 ```
 
 # **项目介绍**
@@ -15,6 +25,7 @@
 # 项目截图
 
 ![1686799470451](image/README/1686799470451.png)![1686799453891](image/README/1686799453891.png)
+
 # 项目特点
 
 集成封装了axios、redux、react-router-dom、styled-components等常用库,封装了主题色变更组件，设置了vite跨域处理，同时预留了权限管理路由的接口，内部实现了单页面页签功能
@@ -50,37 +61,99 @@ export const BeforeRouter = () => {
 };
 ```
 
-支持传入路由表计算返回虚拟dom的高阶组件
+使用类似vue的路由表写法
 
 ```typescript
-const generRoutes = (routes: RouteRecord[]) => {
-  return routes.map((route) => {
-    return (
-      <Route key={route.path} path={route.path} element={route.element}>
-        {route.children ? generRoutes(route.children) : undefined}
-      </Route>
-    );
-  });
+export const baseRoutes: BaseRoute[] = [
+  {
+    path: "/home",
+    element: <Home />,
+    name: "home",
+    meta: {
+      hidden: false,
+      title: "工作台",
+      icon: <DashboardFilled />,
+    },
+  },
+  {
+    path: "/info",
+    name: "info",
+    meta: {
+      hidden: false,
+      title: "信息管理",
+      icon: <HddFilled />
+    },
+    children: [
+      {
+        path: "/info/product",
+        element: <Product />,
+        name: "product",
+        meta: {
+          hidden: false,
+          title: "货品信息",
+        },
+      },
+      {
+        path: "/info/test",
+        element: <div>test</div>,
+        name: "test",
+        meta: {
+          hidden: true,
+          title: "测试",
+        },
+      },
+    ],
+  },
+];
+
+export const routes = [
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    element: <BeforeRouter />,
+    children: [
+      {
+        path:'/',
+        name:'layout', 
+        element:<Layout />,
+        children:baseRoutes
+      }
+    ],
+  },
+  {
+    path: "*",
+    element: <NonExistent />,
+  },
+];
+
+```
+
+封装了路由utils（@/utils/router.ts），方便快捷的获取当前路由情况
+
+```javascript
+import { BaseRoute } from "@/router/index.d";
+
+export const getRoute = (
+  path: string,
+  routes: BaseRoute[]
+): BaseRoute | undefined => {
+  for (let i = 0; i < routes.length; i++) {
+    const route = routes[i];
+    if (route.path === path) {
+      return route;
+    }
+    if (route.children) {
+      const foundObject = getRoute(path, route.children);
+      if (foundObject) {
+        return foundObject;
+      }
+    }
+  }
+
+  return undefined;
 };
-export default function Router() {
-  const { list } = useAppSelector((state) => state.routes);
-  const dispatch = useAppDispatch();
-  const [routes, setRoutes] = useState<RouteRecord[]>([]);
-  useEffect(() => {
-    dispatch({ type: "routes/setLoading", payload: true });
-    setRoutes(filterRoutes(routesProps, list));
-    dispatch({ type: "routes/setLoading", payload: false });
-  }, [list]);
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Login />} path="/login"></Route>
-        <Route element={<BeforeRouter />}>{generRoutes(routes)}</Route>
-        <Route element={<NonExistent />} path="*"></Route>
-      </Routes>
-    </BrowserRouter>
-  );
-}
 ```
 
 ### 内部实现了keepAlive功能，并且集成了可拖拽的页签功能
