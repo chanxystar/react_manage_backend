@@ -38,23 +38,14 @@ export const baseRoutes: BaseRoute[] = [
         },
       },
       {
-        path: "/info/test",
-        element: <div>test</div>,
-        name: "test",
-        meta: {
-          hidden: true,
-          title: "测试",
-        },
-      },
-      {
         path: "/info/product/:id",
-        element: <div>商品:1</div>,
+        element: <div>货品1</div>,
         name: "product",
         meta: {
           hidden: true,
           title: "货品信息1",
         },
-      },
+      }
     ],
   },
 ];

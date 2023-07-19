@@ -61,7 +61,7 @@ export const BeforeRouter = () => {
 };
 ```
 
-使用类似vue的路由表写法
+使用类似vue的路由表写法(支持动态路由/:id的写法)
 
 ```typescript
 export const baseRoutes: BaseRoute[] = [
@@ -94,46 +94,24 @@ export const baseRoutes: BaseRoute[] = [
         },
       },
       {
-        path: "/info/test",
-        element: <div>test</div>,
-        name: "test",
+        path: "/info/product/:id",
+        element: <div>货品1</div>,
+        name: "product",
         meta: {
           hidden: true,
-          title: "测试",
+          title: "货品信息1",
         },
-      },
-    ],
-  },
-];
-
-export const routes = [
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    element: <BeforeRouter />,
-    children: [
-      {
-        path:'/',
-        name:'layout', 
-        element:<Layout />,
-        children:baseRoutes
       }
     ],
   },
-  {
-    path: "*",
-    element: <NonExistent />,
-  },
 ];
-
 ```
 
 封装了路由utils（@/utils/router.ts），方便快捷的获取当前路由情况
 
 ```javascript
 import { BaseRoute } from "@/router/index.d";
+import { matchPath } from "react-router-dom";
 
 export const getRoute = (
   path: string,
@@ -141,6 +119,14 @@ export const getRoute = (
 ): BaseRoute | undefined => {
   for (let i = 0; i < routes.length; i++) {
     const route = routes[i];
+    // 使用react-router-dom的matchPath方法对route里的path和传入的path进行匹配
+    if (route.path.includes(":")) {
+      const match = matchPath({ path: route.path, end: false }, path);
+      if (match) {
+        const dynamicRoute = { ...route, path: match.pathname };
+        return dynamicRoute;
+      }
+    }
     if (route.path === path) {
       return route;
     }

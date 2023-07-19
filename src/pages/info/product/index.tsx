@@ -1,9 +1,14 @@
-import {memo} from 'react'
+import { Button } from "antd";
+import { memo } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Product() {
+  const navigate = useNavigate();
   return (
-    <div>开始开发吧</div>
-  )
+    <Button type="primary" onClick={() => navigate("/info/product/1")}>
+      货品1
+    </Button>
+  );
 }
 
-export default memo(Product)
+export default memo(Product);
