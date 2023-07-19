@@ -46,6 +46,15 @@ export const baseRoutes: BaseRoute[] = [
           title: "测试",
         },
       },
+      {
+        path: "/info/product/:id",
+        element: <div>商品:1</div>,
+        name: "product",
+        meta: {
+          hidden: true,
+          title: "货品信息1",
+        },
+      },
     ],
   },
 ];

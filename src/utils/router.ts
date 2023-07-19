@@ -3,6 +3,7 @@
  */
 
 import { BaseRoute } from "@/router/index.d";
+import { matchPath } from "react-router-dom";
 
 export const getRoute = (
   path: string,
@@ -10,6 +11,14 @@ export const getRoute = (
 ): BaseRoute | undefined => {
   for (let i = 0; i < routes.length; i++) {
     const route = routes[i];
+    // 使用react-router-dom的matchPath方法对route里的path和传入的path进行匹配
+    if (route.path.includes(":")) {
+      const match = matchPath({ path: route.path, end: false }, path);
+      if (match) {
+        const dynamicRoute = { ...route, path: match.pathname };
+        return dynamicRoute;
+      }
+    }
     if (route.path === path) {
       return route;
     }
