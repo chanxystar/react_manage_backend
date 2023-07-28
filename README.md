@@ -12,8 +12,6 @@
 pnpm install
 ```
 
-    or
-
 ```javascript
 npm install
 ```
@@ -25,8 +23,6 @@ npm install
 ```javascript
 pnpm run dev
 ```
-
-    or
 
 ```javascript
 npm run dev
