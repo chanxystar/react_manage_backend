@@ -12,7 +12,7 @@
 pnpm install
 ```
 
-or
+    or
 
 ```javascript
 npm install
@@ -26,7 +26,7 @@ npm install
 pnpm run dev
 ```
 
-or
+    or
 
 ```javascript
 npm run dev
