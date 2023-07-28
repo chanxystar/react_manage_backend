@@ -6,7 +6,7 @@
 安装完成后运行npm run dev 或者 pnpm run dev可运行项目
 登录页面开放 随意填入账号密码即可登录
 
-安装依赖（推荐pnpm)
+### 安装依赖（推荐pnpm)
 
 ```javascript
 pnpm install
@@ -20,7 +20,7 @@ npm install
 
 
 
-运行项目
+### 运行项目
 
 ```javascript
 pnpm run dev
