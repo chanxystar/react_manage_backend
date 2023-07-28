@@ -9,13 +9,27 @@
 安装依赖（推荐pnpm)
 
 ```javascript
-pnpm install or npm install
+pnpm install
 ```
+
+or
+
+```javascript
+npm install
+```
+
+
 
 运行项目
 
 ```javascript
-pnpm run dev or npm run dev
+pnpm run dev
+```
+
+or
+
+```javascript
+npm run dev
 ```
 
 # **项目介绍**
