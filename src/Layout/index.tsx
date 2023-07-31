@@ -23,6 +23,7 @@ import { CallbackItem } from "@/types/common";
 import { Rotate } from "@/styles/global";
 import { ThemeState } from "@/store/modules/theme";
 import ColorSelect from "@/components/ColorSelect";
+import Cookies from "js-cookie";
 const { Header, Sider, Content } = AntdLayout;
 
 const Layout = () => {
@@ -30,7 +31,7 @@ const Layout = () => {
   const dispatch = useAppDispatch();
   const [collapsed, setCollapsed] = useState(false);
   const loginOut = () => {
-    dispatch({ type: "user/logout" });
+    Cookies.remove("TOKEN_KEY");
     navigate("/login", { replace: true });
   };
   const themeConfig = useAppSelector((state) => state.theme.config);
