@@ -20,7 +20,7 @@ interface RoutesList {
 
 
 export interface BaseRoute{
-  path?:string;
+  path:string;
   element?:ReactNode;
   name:string;
   children?:BaseRoute[];

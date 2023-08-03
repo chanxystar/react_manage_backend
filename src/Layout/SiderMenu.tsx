@@ -5,7 +5,7 @@ import { filterToMenu, getMenus } from "@/utils/menu";
 import { memo, useEffect, useMemo, useState } from "react";
 import { CallbackItem } from "@/types/common";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ThemeState } from "@/store/modules/theme";
 import { baseRoutes } from "@/router/routes";
 import { getRoute } from "@/utils/router";
@@ -47,14 +47,14 @@ const SiderMenu = ({ menuSelect }: Props) => {
     });
   };
   const [openKeys, setOpenKeys] = useState<string[]>([]);
-
+  const navigate = useNavigate()
   //根据pathname初始化tabs
   useEffect(() => {
     if (pathname === "/") {
       menuSelect({ key: "/home", label: "工作台" });
     } else if (pathname !== "/") {
       const currentRoute = getRoute(pathname,baseRoutes); 
-      if (currentRoute?.path) {
+      if (currentRoute?.element) {
         //如果不是菜单路由，则不触发菜单选择
         if (currentRoute.meta.hidden) {
           dispatch({
@@ -71,6 +71,8 @@ const SiderMenu = ({ menuSelect }: Props) => {
             label: currentRoute.meta.title,
           });
         }
+      }else{
+        navigate('/404')
       }
     }
   }, [pathname]);

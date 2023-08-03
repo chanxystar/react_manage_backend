@@ -5,7 +5,7 @@ import { BeforeRouter } from "./guard";
 import Login from "@/pages/Login";
 import { NonExistent } from "@/pages/Error";
 import { BaseRoute } from "./index.d";
-const Home = lazy(() => import("@/pages/Home"));
+import Home from "@/pages/Home";
 const Product = lazy(() => import("@/pages/info/product"));
 //本地的路由配置,如果需要从后端获取路由配置,可以跟这个路由表比对过滤后，再传props给APP中的Router
 export const baseRoutes: BaseRoute[] = [
@@ -20,6 +20,7 @@ export const baseRoutes: BaseRoute[] = [
     },
   },
   {
+    path: "/info",
     name: "info",
     meta: {
       hidden: false,
