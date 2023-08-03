@@ -20,7 +20,6 @@ export const baseRoutes: BaseRoute[] = [
     },
   },
   {
-    path: "/info",
     name: "info",
     meta: {
       hidden: false,

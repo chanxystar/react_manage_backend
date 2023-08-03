@@ -54,7 +54,7 @@ const SiderMenu = ({ menuSelect }: Props) => {
       menuSelect({ key: "/home", label: "工作台" });
     } else if (pathname !== "/") {
       const currentRoute = getRoute(pathname,baseRoutes); 
-      if (currentRoute) {
+      if (currentRoute?.path) {
         //如果不是菜单路由，则不触发菜单选择
         if (currentRoute.meta.hidden) {
           dispatch({
